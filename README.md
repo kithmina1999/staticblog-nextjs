@@ -80,7 +80,6 @@ Here's an overview of the key directories and files in the project:
 Blog posts are written in Markdown and can be added under the posts/ directory. Each Markdown file represents a blog post. You can also add front matter (metadata) to each post, like this:
 
 ```md
-Copy code
 ---
 title: 'Your Blog Post Title'
 description: 'A short description of your post'
