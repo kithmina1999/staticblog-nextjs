@@ -52,7 +52,7 @@ const BlogPage = async ({searchParams}:BlogPageProps) => {
                     Nothing to see here yet
                 </p>
             )}
-            <QueryPagination totalPages={totalPages} className='py-4 '/>
+            <QueryPagination totalPages={totalPages} className='mt-4 justify-end'/>
         </div>
     )
 }
