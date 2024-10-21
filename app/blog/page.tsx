@@ -2,10 +2,24 @@ import React from 'react'
 import { posts } from '#site/content'
 import PostItem from '@/components/post/post-item';
 import { sortPosts } from '@/lib/utils';
+import QueryPagination from '@/components/post/query-pagination';
 
-const BlogPage = async () => {
+const POST_PER_PAGE = 5;
+
+interface BlogPageProps{
+    searchParams:{
+        page?:string
+    }
+}
+
+const BlogPage = async ({searchParams}:BlogPageProps) => {
+    const currentPage = Number(searchParams?.page) || 1;
     const sortedPosts = sortPosts(posts.filter((post)=> post.published));
-    const displayPosts = sortedPosts;
+    const totalPages = Math.ceil(sortedPosts.length / POST_PER_PAGE);
+    const displayPosts = sortedPosts.slice(
+        POST_PER_PAGE * (currentPage-1),
+        POST_PER_PAGE * currentPage
+    );
     return (
         <div className='container max-w-5xl py-6 lg:py-10 mx-auto'>
             <div className='flex flex-col md:flex-row items-center gap-4 md:justify-between md:gap-8'>
@@ -38,6 +52,7 @@ const BlogPage = async () => {
                     Nothing to see here yet
                 </p>
             )}
+            <QueryPagination totalPages={totalPages} className='py-4 '/>
         </div>
     )
 }
