@@ -15,15 +15,15 @@ const MainNav = () => {
                 <span className='font-black'>{siteConfig.name}</span>
             </Link>
             <Link href='/blog'
-                className={cn("text-sm font-medium transition-colors hover:text-primary", pathname === '/blog' ? 'text-foreground' : 'text-foreground/60')}>
+                className={cn("text-sm font-medium transition-colors hover:text-primary sm:inline-flex hidden", pathname === '/blog' ? 'text-foreground' : 'text-foreground/60')}>
                 Blog
             </Link>
             <Link href='/about'
-                className={cn("text-sm font-medium transition-colors hover:text-primary", pathname === '/about' ? 'text-foreground' : 'text-foreground/60')}>
+                className={cn("text-sm font-medium transition-colors hover:text-primary sm:inline-flex hidden", pathname === '/about' ? 'text-foreground' : 'text-foreground/60')}>
                 About
             </Link>
             <Link href='/contact'
-                className={cn("text-sm font-medium transition-colors hover:text-primary", pathname === '/contact' ? 'text-foreground' : 'text-foreground/60')}>
+                className={cn("text-sm font-medium transition-colors hover:text-primary sm:inline-flex hidden", pathname === '/contact' ? 'text-foreground' : 'text-foreground/60')}>
                 Contact
             </Link>
         </nav>
