@@ -6,6 +6,7 @@ import { buttonVariants } from "../ui/button";
 import { Icons } from "../icon";
 import MainNav from "./main-nav";
 import MobileNav from "./mobile-nav";
+import ModeToggle from "./mode-toggle";
 
 export const SiteHeader = () => {
     return (
@@ -24,6 +25,7 @@ export const SiteHeader = () => {
                                 <span className="sr-only">Github</span>
                             </div>
                         </Link>
+                        <ModeToggle />
                         <MobileNav />
                     </nav>
                 </div>

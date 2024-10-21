@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from 'next/font/google'
 import "./globals.css";
 import { SiteHeader } from "@/components/header/site-header";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 
 
@@ -21,15 +22,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" >
       <body
         className={` ${interFont.variable} antialiased min-h-screen bg-background font-sans`}
-      >
+        suppressHydrationWarning>
         <div className=" relative flex min-h-dvh flex-col bg-background">
-          <SiteHeader />
-          <main className="flex-1">
-            {children}
-          </main>
+          <ThemeProvider>
+            <SiteHeader />
+            <main className="flex-1">
+              {children}
+            </main>
+          </ThemeProvider>
+
         </div>
       </body>
     </html>
