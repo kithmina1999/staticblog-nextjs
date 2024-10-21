@@ -1,0 +1,169 @@
+---
+title: Building Dynamic Routes in Next.js
+description: Learn how to build dynamic routes in Next.js for flexible and dynamic web applications.
+date: 2024-10-21
+published: true
+---
+
+# Building Dynamic Routes in Next.js
+
+One of the standout features of **Next.js** is its powerful **file-based routing system**, which allows you to create both static and dynamic routes effortlessly. Dynamic routing is crucial when building applications that need flexible URLs, such as user profiles, blog posts, or product pages, where the content is dynamic and driven by data.
+
+In this post, we'll explore how to build dynamic routes in Next.js and how to use dynamic segments to create more flexible and scalable applications.
+
+## What is Dynamic Routing?
+
+In a Next.js app, you create static routes by adding files under the `pages/` directory, where each file represents a route. For instance, a file `pages/about.js` maps to `/about` in your app.
+
+Dynamic routing allows you to generate routes based on data or URL parameters. This is helpful for creating pages like `/users/1`, `/users/2`, or `/posts/123`, where the content varies depending on the URL segment.
+
+## Creating Dynamic Routes
+
+Dynamic routes in Next.js are created by defining files with **square brackets** around their names. This indicates that the route segment is dynamic and can change.
+
+### Step 1: Create a Dynamic Route
+
+Let's say you're building a blog where each post has a unique ID. To create dynamic post pages, add a file called `[id].js` inside the `pages/posts/` directory.
+
+```bash
+pages/
+  posts/
+    [id].js
+```
+
+In [id].js, you can access the dynamic part of the URL (id) using Next.js's getStaticProps and getStaticPaths functions.
+
+## Step 2: Fetch Dynamic Content
+To fetch the content for each dynamic route, you’ll need to provide getStaticProps to fetch data for the individual page and getStaticPaths to define which pages should be generated at build time.
+
+Here’s how to implement this in the [id].js file:
+
+```js
+import { useRouter } from 'next/router';
+
+export default function Post({ post }) {
+  const router = useRouter();
+  const { id } = router.query;
+
+  // Show loading state if the page is still being generated
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
+    </div>
+  );
+}
+
+// Fetch dynamic data for each post
+export async function getStaticProps({ params }) {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${params.id}`);
+  const post = await res.json();
+
+  return {
+    props: {
+      post
+    }
+  };
+}
+
+// Define the paths for the dynamic routes
+export async function getStaticPaths() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts = await res.json();
+
+  const paths = posts.map((post) => ({
+    params: { id: post.id.toString() }
+  }));
+
+  return {
+    paths,
+    fallback: true
+  };
+}
+```
+
+In this example:
+
+* getStaticProps: Fetches data for each post based on the id parameter in the URL.
+* getStaticPaths: Specifies which paths should be generated at build time. If the post IDs are not generated at build time, they will be generated on demand if fallback: true.
+
+## Step 3: Navigating to Dynamic Routes
+Now that your dynamic routes are set up, you can navigate between them using Next.js’s Link component:
+
+```js
+import Link from 'next/link';
+
+export default function PostList({ posts }) {
+  return (
+    <ul>
+      {posts.map((post) => (
+        <li key={post.id}>
+          <Link href={`/posts/${post.id}`}>
+            <a>{post.title}</a>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+export async function getStaticProps() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts = await res.json();
+
+  return {
+    props: {
+      posts
+    }
+  };
+}
+```
+Here, we fetch the list of posts and create links that navigate to the individual post pages using their dynamic URLs.
+
+## Dynamic Nested Routes
+You can create nested dynamic routes by adding dynamic segments in subdirectories. For instance, if you want URLs like /users/[id]/posts/[postId], you would structure your files like this:
+
+```bash
+pages/
+  users/
+    [id]/
+      posts/
+        [postId].js
+```
+
+In this example, you could fetch user-specific posts or display user-specific content by accessing both id and postId from useRouter.
+
+## Handling Fallbacks
+Sometimes, you may want to generate pages dynamically even after the initial build. This is where fallback mode in getStaticPaths comes in:
+
+* fallback: true: The page will be generated on the first request, then cached for subsequent requests.
+* fallback: false: Only the paths returned by getStaticPaths will be generated.
+* fallback: blocking: Next.js will wait for the page to be generated before serving it, providing a seamless experience without a loading state.
+
+## Using Query Parameters in Dynamic Routes
+You can also add query parameters to your dynamic routes. These parameters can be accessed from the router object using router.query.
+
+For example, if you navigate to /posts/1?author=John, you can access the author query parameter like this:
+
+```js
+const router = useRouter();
+const { id, author } = router.query;
+
+return (
+  <div>
+    <h1>Post ID: {id}</h1>
+    <p>Author: {author}</p>
+  </div>
+);
+```
+
+## Conclusion
+Dynamic routes in Next.js give you the power to build flexible and data-driven applications with minimal configuration. By utilizing dynamic segments, you can easily generate pages for users, posts, products, or any other type of content that relies on dynamic URLs.
+
+With tools like getStaticPaths and getStaticProps, along with support for fallback pages, you can create highly optimized and scalable dynamic applications in Next.js.
+
+Happy coding!

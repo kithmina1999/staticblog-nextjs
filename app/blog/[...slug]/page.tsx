@@ -2,6 +2,9 @@ import { posts } from '#site/content';
 import MDXComponent from '@/components/post/mdx';
 import { notFound } from 'next/navigation';
 import React from 'react'
+import "@/styles/mdx.css"
+
+
  interface PostPageProps{
     params:{
         slug:string[];

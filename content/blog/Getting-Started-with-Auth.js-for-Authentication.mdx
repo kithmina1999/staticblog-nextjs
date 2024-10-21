@@ -1,0 +1,133 @@
+---
+title: Getting Started with Auth.js for Authentication
+description: Brief introduction to authentication with Auth.js
+date: 2024-10-21
+published: true
+---
+
+# Getting Started with Auth.js for Authentication
+
+Authentication is a crucial part of modern web applications. **Auth.js** (formerly NextAuth.js) is a powerful and flexible authentication library that seamlessly integrates with Next.js applications. It simplifies handling user sign-ups, logins, and sessions with support for various providers like Google, GitHub, and custom email/password systems.
+
+Auth.js stands out due to its ease of integration and flexibility. It supports multiple authentication providers like OAuth (Google, GitHub, Twitter) and also allows custom credentials login (email/password). It handles session management automatically and can be customized to suit different authentication needs. Let’s explore how you can get started with Auth.js in your Next.js project.
+
+## Setting Up Authentication with Providers
+
+Auth.js makes it simple to use third-party authentication providers. Here’s an example of setting up GitHub as a provider:
+
+```js
+import { Auth } from 'next-auth';
+import GitHubProvider from 'next-auth/providers/github';
+
+export default Auth({
+  providers: [
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET
+    })
+  ]
+});
+
+```
+
+You can also add other providers like Google, Twitter, and more, or combine different providers.
+
+## Session Handling
+
+Auth.js provides a simple and secure session management system. By default, it uses cookies to manage sessions, and you can choose between server-side sessions or JWT (JSON Web Tokens) for a stateless approach.
+
+Here’s how you can configure it to use JWT-based session management:
+
+```js
+const options = {
+  session: {
+    jwt: true
+  }
+};
+
+```
+
+This ensures that session data is stored in a secure and stateless manner, perfect for scalable applications.
+
+## Using Custom Credentials for Authentication
+
+If you want more control over how users authenticate, you can use custom credentials, such as email and password, for login. Auth.js allows you to set up a custom login handler where you verify users manually.
+
+Here’s an example of how you can set up a custom credentials provider:
+
+```js
+import CredentialsProvider from 'next-auth/providers/credentials';
+
+export default Auth({
+  providers: [
+    CredentialsProvider({
+      name: 'Credentials',
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" }
+      },
+      authorize: async (credentials) => {
+        const user = { id: 1, name: 'User', email: 'user@example.com' };
+        if (credentials.username === 'user' && credentials.password === 'password') {
+          return user;
+        }
+        return null;
+      }
+    })
+  ]
+```
+
+## Custom Redirects
+You can customize the flow of redirects after login or logout to provide a smoother user experience:
+
+```js
+callbacks: {
+  async redirect({ url, baseUrl }) {
+    return url.startsWith(baseUrl) ? url : baseUrl;
+  }
+}
+```
+## API Integration
+
+Auth.js integrates perfectly with Next.js API routes, making it easy to add authentication middleware to your API endpoints. For instance, you can protect an API route using the getSession function:
+
+```js
+import { getSession } from 'next-auth/react';
+
+export default async (req, res) => {
+  const session = await getSession({ req });
+  if (session) {
+    res.send({ content: 'This is protected content.' });
+  } else {
+    res.send({ error: 'You must be logged in to access this content.' });
+  }
+};
+
+```
+
+## Getting Started with Auth.js
+To get started with Auth.js in your Next.js project, follow these steps:
+
+### Install Auth.js
+You can install Auth.js via npm or yarn:
+```bash
+npm install next-auth
+ ```
+
+### Configure Providers
+Set up your authentication providers by creating a file at pages/api/auth/[...nextauth].js. You can include providers like Google or GitHub, as well as email/password-based systems.
+
+### Protect Routes
+Use getSession to protect pages or API routes by checking if the user is authenticated before granting access.
+
+### Start Your Application
+Run your application with the development server to start testing your authentication setup.
+
+```bash
+npm run dev
+```
+
+## Conclusion
+Auth.js simplifies the often complex world of user authentication, allowing you to focus on building your application instead of worrying about managing sessions, tokens, or secure authentication flows. Whether you're building a small personal project or a large-scale application, Auth.js offers a flexible, secure solution for handling user authentication.
+
+Happy coding!
