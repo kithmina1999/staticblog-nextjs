@@ -30,7 +30,7 @@ const PostPage = async({params}:PostPageProps) => {
     }
   return (
     
-    <article className='container py-6 prose dark:prose-invert max-w-3xl mx-auto'>
+    <article className='container py-6 prose dark:prose-invert max-w-3xl mx-auto scroll-smooth'>
         <h1 className='mb-2 text-2xl'>{post.title}</h1>
         {post.description ? (
             <p className='text-xl mt-0 text-muted-foreground'>{post.description}</p>

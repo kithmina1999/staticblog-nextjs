@@ -21,7 +21,7 @@ const MDXComponent = ({ code }: MDXComponentProps) => {
     const Component = useMDXComponent(code)
 
     return (
-        <Component components={components} />
+        <Component components={components}/>
     )
 }
 

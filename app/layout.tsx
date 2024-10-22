@@ -29,7 +29,7 @@ export default function RootLayout({
         <div className=" relative flex min-h-dvh flex-col bg-background">
           <ThemeProvider>
             <SiteHeader />
-            <main className="flex-1">
+            <main className="flex-1 scroll-smooth ">
               {children}
             </main>
           </ThemeProvider>

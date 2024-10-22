@@ -11,9 +11,9 @@ export default function Home() {
   return (
 
     <>
-      <section className="space-y-6 pb-8 pt-24 md:pb-12 md:mt-10 lg:py-32">
+      <section className="space-y-6 pb-8 pt-12 md:pb-12 md:mt-10 lg:py-44">
         <div className="container flex text-center gap-4 flex-col mx-auto">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold">
             Hello, I&apos;m Kithmina
           </h1>
           <p className="max-w-[42rem] mx-auto text-muted-foreground sm:text-xl text-balance">
